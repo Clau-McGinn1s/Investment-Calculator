@@ -3,12 +3,13 @@ import { InputGroup } from "./components/InputGroup"
 import { useState } from "react"
 import { calculateInvestmentResults } from "./util/investment";
 import { Results } from "./components/Results";
+import { Error } from "./components/Error";
 
 const blankData = {
-  initialInvestment : null,
-  annualInvestment : null,
-  expectedReturn : null,
-  duration : null,
+  initialInvestment : 10000,
+  annualInvestment : 1200,
+  expectedReturn : 1.5,
+  duration : 10,
 };
 
 function calculateInvestment(data){
@@ -21,6 +22,7 @@ function calculateInvestment(data){
 
 function App() {
   const [inputData, setData] = useState(blankData);
+  const [errMessage, throwError] = useState(false);
 
   const resultsData = calculateInvestment(inputData);
   console.log( resultsData ?? "No results");
@@ -35,6 +37,13 @@ function App() {
           };
 
           newData[name] = parseFloat(value);
+
+          if(newData.duration < 1){
+            throwError("Duration must be a positive value");
+          }else{
+            throwError(false);
+          }
+
           return newData;
       });
   }
@@ -43,8 +52,10 @@ function App() {
   return (
     <main>
       <Header />
-      <InputGroup updateData={inputDataHandler}/>
-      <Results results={resultsData}/>
+      <InputGroup updateData={inputDataHandler} refData={blankData}/>
+      {errMessage ? <Error message={errMessage}/> :
+        <Results results={resultsData}/>
+      }
     </main>
   )
 }
