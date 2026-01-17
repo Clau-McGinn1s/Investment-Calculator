@@ -1,0 +1,5 @@
+add comps --> header, user input, output table
+fetch and store user input
+get investment results (with util func)
+display results in output table, table must have usual table structure <table> <thead> <tbody> <tr> <th> <td>
+display info message if an invalid duration has been entered
